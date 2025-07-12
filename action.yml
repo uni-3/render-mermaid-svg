@@ -2,7 +2,7 @@ name: 'Generate Mermaid Diagrams'
 description: 'Generates SVG diagrams from changed files using the minlag/mermaid-cli Docker image.'
 
 inputs:
-  changed-files:
+  input-files:
     description: 'A space-separated string of changed .mmd or .md files.'
     required: true
   output-dir:
@@ -16,10 +16,6 @@ inputs:
     description: 'Icon packages to pass to the mmdc --iconPacks flag.'
     required: false
     default: '@fortawesome/fontawesome-free'
-  puppeteer-config:
-    description: 'Path to the puppeteer config file.'
-    required: false
-    default: 'puppeteer-config.json'
 
 runs:
   using: 'docker'

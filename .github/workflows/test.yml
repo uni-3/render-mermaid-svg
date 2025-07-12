@@ -1,31 +1,36 @@
-name: 'Test Mermaid to SVG Action'
+name: 'Generate Mermaid Diagrams'
 
 on:
   push:
+    paths:
+      - '**.mmd'
+      - '**.md'
 
 jobs:
-  test-action:
+  generate-diagrams:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout code'
         uses: actions/checkout@v3
 
-      - name: 'Create a dummy mermaid file'
-        run: |
-          mkdir -p diagrams
-          echo "graph TD; A-->B;" > diagrams/test.mmd
+      - name: 'Get changed files'
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            **.mmd
+            **.md
 
-      - name: 'Run the action'
+      - name: 'Generate Mermaid diagrams'
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: ./
         with:
-          changed-files: 'diagrams/test.mmd'
-          output-dir: 'test-output'
+          input-files: ${{ steps.changed-files.outputs.all_changed_files }}
+          output-dir: 'generated-diagrams'
 
-      - name: 'Check for output file'
-        run: |
-          if [ -f "test-output/test.svg" ]; then
-            echo "Output file found."
-          else
-            echo "Output file not found."
-            exit 1
-          fi
+      - name: Commit rendered svg files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5.0.0
+        with:
+          file_pattern: "generated-diagrams/*.svg"
+          commit_message: "docs: Generate Mermaid diagrams"

@@ -3,8 +3,8 @@ name: 'Generate Mermaid Diagrams'
 on:
   push:
     paths:
-      - '**.mmd'
-      - '**.md'
+      - 'examples/**.md'
+      - 'examples/**.mmd'
 
 jobs:
   generate-diagrams:
@@ -18,8 +18,8 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: |
-            **.mmd
-            **.md
+            examples/**.md
+            examples/**.mmd
 
       - name: 'Generate Mermaid diagrams'
         if: steps.changed-files.outputs.any_changed == 'true'
@@ -27,6 +27,7 @@ jobs:
         with:
           input-files: ${{ steps.changed-files.outputs.all_changed_files }}
           output-dir: 'generated-diagrams'
+          icon-packages: '@iconify-json/logos @iconify-json/mdi'
 
       - name: Commit rendered svg files
         if: steps.changed-files.outputs.any_changed == 'true'

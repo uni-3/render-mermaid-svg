@@ -22,33 +22,5 @@ inputs:
     default: 'puppeteer-config.json'
 
 runs:
-  using: 'composite'
-  steps:
-    - name: Generate Diagrams using Docker
-      run: |
-        echo "Generating diagrams with minlag/mermaid-cli:${{ inputs.version }}"
-        for file in ${{ inputs.changed-files }}; do
-          output_filename=$(basename "$file" | sed 's/\\.\\(mmd\\|md\\)$/.svg/')
-
-          if [ -n "${{ inputs.output-dir }}" ]; then
-            final_output_dir="${{ inputs.output-dir }}"
-          else
-            input_dir=$(dirname "$file")
-            final_output_dir="$input_dir/auto_generated"
-          fi
-
-          output_file="$final_output_dir/$output_filename"
-
-          mkdir -p "$final_output_dir"
-
-          echo "Processing '$file' -> '$output_file'"
-
-          docker run --rm \
-            -v "${{ github.workspace }}":/data \
-            minlag/mermaid-cli:${{ inputs.version }} \
-            -i "/data/${file#./}" \
-            -o "/data/${output_file#./}" \
-            --puppeteerConfigFile "/data/${{ inputs.puppeteer-config }}" \
-            --iconPacks "${{ inputs.icon-packages }}"
-        done
-      shell: bash
+  using: 'docker'
+  image: 'Dockerfile'

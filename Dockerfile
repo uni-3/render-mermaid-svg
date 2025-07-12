@@ -1,5 +1,10 @@
 FROM minlag/mermaid-cli:latest
 
-COPY --chmod=0755 entrypoint.sh /entrypoint.sh
+USER root
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+USER mermaidcli
 
 ENTRYPOINT ["/entrypoint.sh"]

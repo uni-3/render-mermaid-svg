@@ -1,0 +1,54 @@
+name: 'Generate Mermaid Diagrams'
+description: 'Generates SVG diagrams from changed files using the minlag/mermaid-cli Docker image.'
+
+inputs:
+  changed-files:
+    description: 'A space-separated string of changed .mmd or .md files.'
+    required: true
+  output-dir:
+    description: "Optional. The directory to place generated files. If not set, creates an 'auto_generated' folder in each source file's directory."
+    required: false
+  version:
+    description: 'The minlag/mermaid-cli docker image version (tag).'
+    required: false
+    default: 'latest'
+  icon-packages:
+    description: 'Icon packages to pass to the mmdc --iconPacks flag.'
+    required: false
+    default: '@fortawesome/fontawesome-free'
+  puppeteer-config:
+    description: 'Path to the puppeteer config file.'
+    required: false
+    default: 'puppeteer-config.json'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Generate Diagrams using Docker
+      run: |
+        echo "Generating diagrams with minlag/mermaid-cli:${{ inputs.version }}"
+        for file in ${{ inputs.changed-files }}; do
+          output_filename=$(basename "$file" | sed 's/\\.\\(mmd\\|md\\)$/.svg/')
+
+          if [ -n "${{ inputs.output-dir }}" ]; then
+            final_output_dir="${{ inputs.output-dir }}"
+          else
+            input_dir=$(dirname "$file")
+            final_output_dir="$input_dir/auto_generated"
+          fi
+
+          output_file="$final_output_dir/$output_filename"
+
+          mkdir -p "$final_output_dir"
+
+          echo "Processing '$file' -> '$output_file'"
+
+          docker run --rm \
+            -v "${{ github.workspace }}":/data \
+            minlag/mermaid-cli:${{ inputs.version }} \
+            -i "/data/${file#./}" \
+            -o "/data/${output_file#./}" \
+            --puppeteerConfigFile "/data/${{ inputs.puppeteer-config }}" \
+            --iconPacks "${{ inputs.icon-packages }}"
+        done
+      shell: bash

@@ -1,0 +1,31 @@
+name: 'Test Mermaid to SVG Action'
+
+on:
+  push:
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v3
+
+      - name: 'Create a dummy mermaid file'
+        run: |
+          mkdir -p diagrams
+          echo "graph TD; A-->B;" > diagrams/test.mmd
+
+      - name: 'Run the action'
+        uses: ./
+        with:
+          changed-files: 'diagrams/test.mmd'
+          output-dir: 'test-output'
+
+      - name: 'Check for output file'
+        run: |
+          if [ -f "test-output/test.svg" ]; then
+            echo "Output file found."
+          else
+            echo "Output file not found."
+            exit 1
+          fi

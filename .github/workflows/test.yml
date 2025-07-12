@@ -3,8 +3,9 @@ name: 'Generate Mermaid Diagrams'
 on:
   push:
     paths:
-      - 'examples/**.md'
-      - 'examples/**.mmd'
+      - '**.md'
+      - '**.mmd'
+      - '.github/workflows/test.yml'
 
 jobs:
   generate-diagrams:
@@ -18,8 +19,8 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: |
-            examples/**.md
-            examples/**.mmd
+            **.md
+            **.mmd
 
       - name: 'Generate Mermaid diagrams'
         if: steps.changed-files.outputs.any_changed == 'true'

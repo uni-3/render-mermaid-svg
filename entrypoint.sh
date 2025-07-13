@@ -1,13 +1,18 @@
 #!/bin/sh -l
 
-echo "Generating diagrams with minlag/mermaid-cli:${INPUT_VERSION}"
-echo "Input files: ${INPUT_INPUT_FILES}"
+INPUT_FILES=$1
+OUTPUT_DIR=$2
+VERSION=$3
+ICON_PACKAGES=$4
 
-for file in ${INPUT_INPUT_FILES}; do
+echo "Generating diagrams with minlag/mermaid-cli:${VERSION}"
+echo "Input files: ${INPUT_FILES}"
+
+for file in ${INPUT_FILES}; do
   output_filename=$(basename "$file" | sed 's/\.\(mmd\|md\)$/.svg/')
 
-  if [ -n "${INPUT_OUTPUT_DIR}" ]; then
-    final_output_dir="${INPUT_OUTPUT_DIR}"
+  if [ -n "${OUTPUT_DIR}" ]; then
+    final_output_dir="${OUTPUT_DIR}"
   else
     input_dir=$(dirname "$file")
     final_output_dir="$input_dir/generated"
@@ -19,5 +24,5 @@ for file in ${INPUT_INPUT_FILES}; do
 
   echo "Processing '$file' -> '$output_file'"
 
-  mmdc -i "$file" -o "$output_file" --iconPacks "${INPUT_ICON_PACKAGES}"
+  mmdc -i "$file" -o "$output_file" --iconPacks "${ICON_PACKAGES}"
 done

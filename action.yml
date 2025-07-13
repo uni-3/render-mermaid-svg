@@ -20,3 +20,8 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.input-files }}
+    - ${{ inputs.output-dir }}
+    - ${{ inputs.version }}
+    - ${{ inputs.icon-packages }}

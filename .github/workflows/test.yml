@@ -1,0 +1,39 @@
+name: 'Generate Mermaid Diagrams'
+
+on:
+  push:
+    paths:
+      - '**.md'
+      - '**.mmd'
+      - '.github/workflows/test.yml'
+
+jobs:
+  generate-diagrams:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v4
+
+      - name: 'Get changed files'
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+        with:
+          files: |
+            **.md
+            **.mmd
+
+      - name: 'Generate Mermaid diagrams'
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: ./
+        with:
+          input-files: ${{ steps.changed-files.outputs.all_changed_files }}
+          icon-packages: "'@iconify-json/logos' '@iconify-json/mdi'"
+
+      - name: Commit rendered svg files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          file_pattern: "*.svg"
+          commit_message: "docs: Generate Mermaid diagrams"

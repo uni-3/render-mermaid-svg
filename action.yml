@@ -1,0 +1,27 @@
+name: 'Generate Mermaid Diagrams'
+description: 'Generates SVG diagrams from changed files using the minlag/mermaid-cli Docker image.'
+
+inputs:
+  input-files:
+    description: 'A space-separated string of changed .mmd or .md files.'
+    required: true
+  output-dir:
+    description: "Optional. The directory to place generated files. If not set, creates a 'generated' folder in each source file's directory."
+    required: false
+  version:
+    description: 'The minlag/mermaid-cli docker image version (tag).'
+    required: false
+    default: 'latest'
+  icon-packages:
+    description: 'Icon packages to pass to the mmdc --iconPacks flag.'
+    required: false
+    default: '@fortawesome/fontawesome-free'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.input-files }}
+    - ${{ inputs.output-dir }}
+    - ${{ inputs.version }}
+    - ${{ inputs.icon-packages }}

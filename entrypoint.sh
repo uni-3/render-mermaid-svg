@@ -1,6 +1,8 @@
 #!/bin/sh -l
 
 echo "Generating diagrams with minlag/mermaid-cli:${INPUT_VERSION}"
+echo "Input files: ${INPUT_INPUT_FILES}"
+
 for file in ${INPUT_INPUT_FILES}; do
   output_filename=$(basename "$file" | sed 's/\.\(mmd\|md\)$/.svg/')
 

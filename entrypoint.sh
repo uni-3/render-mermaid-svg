@@ -26,6 +26,7 @@ for file in ${INPUT_FILES}; do
 
   echo "Processing '$file' -> '$output_file'"
 
-  CMD="${MMDC_PATH} -p /puppeteer-config.json -i \"$file\" -o \"$output_file\" --iconPacks ${ICON_PACKAGES}"
-  eval ${CMD}
+  ${MMDC_PATH} -p /puppeteer-config.json -i \"$file\" -o \"$output_file\" --iconPacks ${ICON_PACKAGES}
+  #CMD="${MMDC_PATH} -p /puppeteer-config.json -i \"$file\" -o \"$output_file\" --iconPacks ${ICON_PACKAGES}"
+  #eval ${CMD}
 done

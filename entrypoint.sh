@@ -26,5 +26,5 @@ for file in ${INPUT_FILES}; do
 
   echo "Processing '$file' -> '$output_file'"
 
-  ${MMDC_PATH} -i "$file" -o "$output_file" --iconPacks "${ICON_PACKAGES}"
+  ${MMDC_PATH} -p /puppeteer-config.json -i "$file" -o "$output_file" --iconPacks "${ICON_PACKAGES}"
 done

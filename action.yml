@@ -6,8 +6,9 @@ inputs:
     description: 'A space-separated string of changed .mmd or .md files.'
     required: true
   output-dir:
-    description: "Optional. The directory to place generated files. If not set, creates an 'auto_generated' folder in each source file's directory."
+    description: "Optional. The directory to place generated files."
     required: false
+    default: 'generated'
   version:
     description: 'The minlag/mermaid-cli docker image version (tag).'
     required: false

@@ -4,12 +4,7 @@ echo "Generating diagrams with minlag/mermaid-cli:${INPUT_VERSION}"
 for file in ${INPUT_INPUT_FILES}; do
   output_filename=$(basename "$file" | sed 's/\.\(mmd\|md\)$/.svg/')
 
-  if [ -n "${INPUT_OUTPUT_DIR}" ]; then
-    final_output_dir="${INPUT_OUTPUT_DIR}"
-  else
-    input_dir=$(dirname "$file")
-    final_output_dir="$input_dir/auto_generated"
-  fi
+  final_output_dir="${INPUT_OUTPUT_DIR}"
 
   output_file="$final_output_dir/$output_filename"
 

@@ -1,4 +1,4 @@
-architecture test final-final-update
+architecture test icon-test
 
 ```mermaid
 architecture-beta

@@ -5,6 +5,8 @@ OUTPUT_DIR=$2
 VERSION=$3
 ICON_PACKAGES=$4
 
+MMDC_PATH="/home/mermaidcli/node_modules/.bin/mmdc"
+
 echo "Generating diagrams with minlag/mermaid-cli:${VERSION}"
 echo "Input files: ${INPUT_FILES}"
 
@@ -24,5 +26,5 @@ for file in ${INPUT_FILES}; do
 
   echo "Processing '$file' -> '$output_file'"
 
-  mmdc -i "$file" -o "$output_file" --iconPacks "${ICON_PACKAGES}"
+  ${MMDC_PATH} -i "$file" -o "$output_file" --iconPacks "${ICON_PACKAGES}"
 done

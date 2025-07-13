@@ -5,8 +5,6 @@ OUTPUT_DIR=$2
 VERSION=$3
 ICON_PACKAGES=$4
 
-echo "Argument 4: ${ICON_PACKAGES}"
-
 MMDC_PATH="/home/mermaidcli/node_modules/.bin/mmdc"
 
 echo "Generating diagrams with minlag/mermaid-cli:${VERSION}"
@@ -28,5 +26,7 @@ for file in ${INPUT_FILES}; do
 
   echo "Processing '$file' -> '$output_file'"
 
-  ${MMDC_PATH} -p /puppeteer-config.json -i "$file" -o "$output_file" --iconPacks ${ICON_PACKAGES}
+  CMD="${MMDC_PATH} -p /puppeteer-config.json -i \"$file\" -o \"$output_file\" --iconPacks ${ICON_PACKAGES}"
+  echo "Executing: ${CMD}"
+  eval ${CMD}
 done

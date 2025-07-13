@@ -1,6 +1,7 @@
 # Mermaid to SVG Action
 
 This GitHub Action uses the Mermaid CLI to convert Mermaid diagrams from changed `.mmd` or `.md` files into SVG images.
+It can also render [Architecture Diagrams](https://mermaid.js.org/syntax/architecture.html) with specified icon packages.
 
 ## Usage
 

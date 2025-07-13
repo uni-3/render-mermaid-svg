@@ -27,5 +27,5 @@ runs:
     - ${{ inputs.icon-packages }}
 
 branding:
-  icon: 'activity'
+  icon: 'monitor'
   color: 'green'

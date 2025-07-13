@@ -27,12 +27,11 @@ jobs:
         uses: ./
         with:
           input-files: ${{ steps.changed-files.outputs.all_changed_files }}
-          output-dir: 'generated-diagrams'
           icon-packages: '@iconify-json/logos @iconify-json/mdi'
 
       - name: Commit rendered svg files
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v6
         with:
-          file_pattern: "generated-diagrams/*.svg"
+          file_pattern: "*.svg"
           commit_message: "docs: Generate Mermaid diagrams"

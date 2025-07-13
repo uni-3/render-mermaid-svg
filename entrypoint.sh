@@ -5,6 +5,8 @@ OUTPUT_DIR=$2
 VERSION=$3
 ICON_PACKAGES=$4
 
+echo "Argument 4: ${ICON_PACKAGES}"
+
 MMDC_PATH="/home/mermaidcli/node_modules/.bin/mmdc"
 
 echo "Generating diagrams with minlag/mermaid-cli:${VERSION}"

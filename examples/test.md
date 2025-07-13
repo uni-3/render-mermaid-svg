@@ -1,4 +1,4 @@
-architecture test eval-test
+architecture test
 
 ```mermaid
 architecture-beta

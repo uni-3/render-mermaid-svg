@@ -4,7 +4,6 @@ This GitHub Action uses the Mermaid CLI to convert Mermaid diagrams from changed
 
 ## Usage
 
-You can use this action in your workflow by referencing it with `uni-3/render-mermaid-svg@v1` (once a version 1 is released).
 
 ### Example Workflow
 

@@ -1,10 +1,10 @@
 # Mermaid to SVG Action
 
 This GitHub Action uses the Mermaid CLI to convert Mermaid diagrams from changed `.mmd` or `.md` files into SVG images.
+It can also render [Architecture Diagrams](https://mermaid.js.org/syntax/architecture.html) with specified icon packages.
 
 ## Usage
 
-You can use this action in your workflow by referencing it with `uni-3/render-mermaid-svg@v1` (once a version 1 is released).
 
 ### Example Workflow
 
@@ -66,4 +66,4 @@ This workflow will:
 | `input-files`   | A space-separated string of changed `.mmd` or `.md` files.                                                                               | **Yes**  | N/A                            |
 | `output-dir`    | Optional. The directory to place generated files. If not set, it creates a `generated` folder in each source file's directory.        | No       | `''`                           |
 | `version`       | The `minlag/mermaid-cli` docker image version (tag).                                                                                     | No       | `latest`                       |
-| `icon-packages` | Icon packages to pass to the `mmdc --iconPacks` flag. Each package should be quoted and space-separated.                                   | No       | `'@fortawesome/fontawesome-free'` |
+| `icon-packages` | Icon packages to pass to the `mmdc --iconPacks` flag. Each package should be quoted and space-separated. e.g. `'@iconify-json/logos' '@iconify-json/mdi'` | No       | `` `@fortawesome/fontawesome-free` `` |

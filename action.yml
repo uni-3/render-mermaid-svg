@@ -25,3 +25,7 @@ runs:
     - ${{ inputs.output-dir }}
     - ${{ inputs.version }}
     - ${{ inputs.icon-packages }}
+
+branding:
+  icon: 'monitor'
+  color: 'green'

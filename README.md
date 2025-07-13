@@ -14,7 +14,7 @@ This workflow automatically finds changed Mermaid files, generates SVG diagrams,
 name: 'Generate Mermaid Diagrams'
 
 on:
-  push:
+  pull_request:
     paths:
       - '**.md'
       - '**.mmd'
@@ -41,7 +41,7 @@ jobs:
         uses: uni-3/render-mermaid-svg@v1
         with:
           input-files: ${{ steps.changed-files.outputs.all_changed_files }}
-          icon-packages: "'@iconify-json/logos' '@iconify-json/mdi'"
+          icon-packages: '@iconify-json/logos @iconify-json/mdi'
 
       - name: Commit rendered svg files
         if: steps.changed-files.outputs.any_changed == 'true'

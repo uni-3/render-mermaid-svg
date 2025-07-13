@@ -14,23 +14,24 @@ name: 'Generate Mermaid Diagrams'
 on:
   push:
     paths:
-      - '**.mmd'
       - '**.md'
+      - '**.mmd'
+      - '.github/workflows/test.yml'
 
 jobs:
   generate-diagrams:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout code'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 'Get changed files'
         id: changed-files
-        uses: tj-actions/changed-files@v35
+        uses: tj-actions/changed-files@v46
         with:
           files: |
-            **.mmd
             **.md
+            **.mmd
 
       - name: 'Generate Mermaid diagrams'
         if: steps.changed-files.outputs.any_changed == 'true'
@@ -41,14 +42,14 @@ jobs:
 
       - name: Commit rendered svg files
         if: steps.changed-files.outputs.any_changed == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v5.0.0
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           file_pattern: "generated-diagrams/*.svg"
           commit_message: "docs: Generate Mermaid diagrams"
 ```
 
 This workflow will:
-1.  Run on every push that includes changes to `.mmd` or `.md` files.
+1.  Run on every push that includes changes to `.mmd` or `.md` files, or the workflow file itself.
 2.  Check out the repository's code.
 3.  Use the `tj-actions/changed-files` action to get a list of modified files.
 4.  If any relevant files have changed, it will run our Mermaid to SVG action.
@@ -60,6 +61,6 @@ This workflow will:
 | Name            | Description                                                                                                                              | Required | Default                        |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------ |
 | `input-files`   | A space-separated string of changed `.mmd` or `.md` files.                                                                               | **Yes**  | N/A                            |
-| `output-dir`    | Optional. The directory to place generated files. If not set, it creates an `auto_generated` folder in each source file's directory.        | No       | `''`                           |
+| `output-dir`    | Optional. The directory to place generated files. If not set, it creates a `generated` folder in each source file's directory.        | No       | `''`                           |
 | `version`       | The `minlag/mermaid-cli` docker image version (tag).                                                                                     | No       | `latest`                       |
 | `icon-packages` | Icon packages to pass to the `mmdc --iconPacks` flag.                                                                                    | No       | `@fortawesome/fontawesome-free` |

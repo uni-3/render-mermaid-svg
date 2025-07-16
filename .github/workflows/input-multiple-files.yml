@@ -1,0 +1,29 @@
+name: 'Generate Mermaid Diagrams (Hardcoded Multiple Files)'
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  generate-diagrams:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v4
+
+      - name: 'Generate Mermaid diagrams'
+        uses: ./
+        with:
+          input-files: 'examples/dummy1.md examples/dummy2.mmd'
+          output-dir: 'examples/generated'
+          icon-packages: '@iconify-json/logos @iconify-json/mdi'
+
+      - name: Commit rendered svg files
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          file_pattern: "*.svg"
+          commit_message: "docs: Generate Mermaid diagrams (hardcoded)"

@@ -1,4 +1,4 @@
-name: 'Generate Mermaid Diagrams'
+name: 'Render Mermaid Svg'
 description: 'Generates SVG diagrams from changed files using the minlag/mermaid-cli Docker image.'
 
 inputs:

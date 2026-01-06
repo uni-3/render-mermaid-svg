@@ -1,0 +1,92 @@
+name: 'Local Test - Render Mermaid SVG'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v4
+
+      - name: 'fix mkdir permissions for act'
+        run: chmod -R 777 .
+
+      - name: 'Test: Basic rendering'
+        uses: ./
+        with:
+          input-files: 'test/fixtures/simple.mmd test/fixtures/flowchart.md test/fixtures/articles/*'
+
+      - name: 'Verify generated SVG files exist'
+        run: |
+          echo "Checking if SVG files were generated..."
+          if [ -f "test/fixtures/generated/simple.svg" ]; then
+            echo "✓ simple.mmd -> test/fixtures/generated/simple.svg"
+          else
+            echo "✗ simple.svg NOT found"
+            exit 1
+          fi
+
+          if [ -f "test/fixtures/generated/flowchart-1.svg" ]; then
+            echo "✓ flowchart.md -> test/fixtures/generated/flowchart-1.svg"
+          else
+            echo "✗ flowchart-1.svg NOT found"
+            exit 1
+          fi
+
+          if [ -f "test/fixtures/articles/generated/article1-1.svg" ]; then
+            echo "✓ articles/article1.md to test/fixtures/articles/generated/article1-1.svg"
+          else
+            echo "✗ article1-1.svg NOT found"
+            exit 1
+          fi
+
+          if [ -f "test/fixtures/articles/generated/article2-1.svg" ]; then
+            echo "✓ articles/article2.md -> test/fixtures/articles/generated/article2-1.svg"
+          else
+            echo "✗ article2-1.svg NOT found"
+            exit 1
+          fi
+
+          if [ -f "test/fixtures/articles/generated/article2-2.svg" ]; then
+            echo "✓ articles/article2.md -> test/fixtures/articles/generated/article2-2.svg"
+          else
+            echo "✗ article2-2.svg NOT found"
+            exit 1
+          fi
+
+      - name: 'Verify SVG content is valid'
+        run: |
+          echo "Checking SVG content..."
+          for svg in test/fixtures/generated/*.svg; do
+            if grep -q '<svg' "$svg" && grep -q '</svg>' "$svg"; then
+              echo "✓ $svg is valid SVG"
+            else
+              echo "✗ $svg is NOT valid SVG"
+              exit 1
+            fi
+          done
+
+      - name: 'Test: Custom output directory'
+        uses: ./
+        with:
+          input-files: 'test/fixtures/custom-output.mmd'
+          output-dir: 'test/output'
+
+      - name: 'Verify custom output directory'
+        run: |
+          echo "Checking custom output directory..."
+          if [ -f "test/output/custom-output.svg" ]; then
+            echo "✓ custom-output.mmd -> test/output/custom-output.svg"
+          else
+            echo "✗ custom-output.svg NOT found in test/output"
+            exit 1
+          fi
+
+      - name: 'Display test results'
+        if: always()
+        run: |
+          echo "=== Test Summary ==="
+          echo "Generated files:"
+          find test -name "*.svg" -type f || echo "No SVG files found"

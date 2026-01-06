@@ -1,0 +1,14 @@
+# Test artifacts
+test/fixtures/generated/
+test/output/
+/tmp/act-test-output.log
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

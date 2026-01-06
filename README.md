@@ -67,3 +67,56 @@ This workflow will:
 | `output-dir`    | Optional. The directory to place generated files. If not set, it creates a `generated` folder in each source file's directory.        | No       | `''`                           |
 | `version`       | The `minlag/mermaid-cli` docker image version (tag).                                                                                     | No       | `latest`                       |
 | `icon-packages` | Icon packages to pass to the `mmdc --iconPacks` flag. Each package should be quoted and space-separated. e.g. `'@iconify-json/logos' '@iconify-json/mdi'` | No       | `` `@fortawesome/fontawesome-free` `` |
+
+## Testing
+
+This action includes local testing capabilities to verify that inputs are correctly processed and outputs are generated as expected.
+
+### Quick Test (Recommended)
+
+Run a quick test using Docker directly:
+
+```bash
+./test-quick.sh
+```
+
+This script will:
+- ✅ Build the Docker image
+- ✅ Test basic rendering (default output directory)
+- ✅ Test custom output directory
+- ✅ Verify SVG file existence and validity
+
+### Full Test with Act
+
+For a more comprehensive test that simulates the GitHub Actions environment:
+
+```bash
+./test-local.sh
+```
+
+This requires [act](https://github.com/nektos/act) to be installed. The script will:
+- ✅ Run the complete workflow locally
+- ✅ Test multiple scenarios
+- ✅ Verify all outputs
+
+### Manual Testing
+
+You can also manually test the action:
+
+```bash
+# Build the Docker image
+docker build -t render-mermaid-svg-test .
+
+# Run with test files
+docker run --rm \
+  -v "$PWD:/github/workspace" \
+  -w /github/workspace \
+  render-mermaid-svg-test \
+  "test/fixtures/simple.mmd" \
+  "" \
+  "latest" \
+  "@fortawesome/fontawesome-free"
+
+# Check generated files
+ls -la test/fixtures/generated/
+```
